@@ -35,8 +35,10 @@
             pw:$("#pw").val()
         }
 
-        $.get("./api/chk_acc.php",data,(res)=>{
+        $.get("./api/chk_acc.php",data,(res)=>{   
+            console.log(res);
             if(parseInt(res)){
+
                 $.get("./api/chk_pw.php",data,(res)=>{
                     if(parseInt(res)){
                         //登入成功
