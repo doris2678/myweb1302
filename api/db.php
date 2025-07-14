@@ -9,7 +9,7 @@ function dd($array){
 }
 
 function q($sql){
-    $dsn='mysql:host=localhost;dbname=db18;charset=utf8';
+    $dsn='mysql:host=localhost;dbname=db13;charset=utf8';
     $pdo=new PDO($dsn,'root','');
     return $pdo->query($sql)->fetchAll(PDO::FETCH_ASSOC);
 }
@@ -19,7 +19,7 @@ function to($url){
 }
 
 class DB{
-private $dsn="mysql:host=localhost;dbname=db18;charset=utf8";
+private $dsn="mysql:host=localhost;dbname=db13;charset=utf8";
 private $pdo;   
 private $table;
 
