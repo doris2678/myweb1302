@@ -9,7 +9,7 @@ function dd($array){
 }
 
 function q($sql){
-    $dsn='mysql:host=localhost;dbname=db13;charset=utf8';
+    $dsn='mysql:host=localhost;dbname=db18;charset=utf8';
     $pdo=new PDO($dsn,'root','');
     return $pdo->query($sql)->fetchAll(PDO::FETCH_ASSOC);
 }
@@ -19,7 +19,7 @@ function to($url){
 }
 
 class DB{
-private $dsn="mysql:host=localhost;dbname=db13;charset=utf8";
+private $dsn="mysql:host=localhost;dbname=db18;charset=utf8";
 private $pdo;   
 private $table;
 
@@ -111,7 +111,7 @@ function save($array){
         $values=join("','",$array);
         $sql="insert into $this->table (`$cols`) values('$values')";
     }
-    //echo $sql;
+
     return $this->pdo->exec($sql);
 }
 
@@ -142,34 +142,35 @@ private function arraytosql($array){
 }
 
 
-//  $User->save(['acc'=>'test','pw'=>'5678','email'=>'test@labor.gov.tw']);
-//  $User->save(['acc'=>'mem01','pw'=>'mem01','email'=>'mem01@labor.gov.tw']);
-//  $User->save(['acc'=>'mem02','pw'=>'mem02','email'=>'mem02@labor.gov.tw']);
+$User=new DB('users');
+$Visit=new DB("visit");
+/* 測試資料庫連線及功能正常
+$User->save(['acc'=>'test','pw'=>'5678','email'=>'test@labor.gov.tw']);
+$User->save(['acc'=>'mem01','pw'=>'mem01','email'=>'mem01@labor.gov.tw']);
+$User->save(['acc'=>'mem02','pw'=>'mem02','email'=>'mem02@labor.gov.tw'])
 
 
-// $Title=new DB('title');
-// $Ad=new DB('ad');
-// $Mvim=new DB('mvim');
-// $Image=new DB('image');
-// $News=new DB('news');
-// $Admin=new DB('admin');
-// $Menu=new DB('menu');
-// $Total=new DB('total');
-// $Bottom=new DB('bottom');
+ */
 
- $User=new DB('user');
- $Visit=new DB('visit');
+
+
 
 if(!isset($_SESSION['visit'])){
     //第一次來訪
     $today=$Visit->find(['date'=>date("Y-m-d")]);
     if(empty($today)){
-       $Visit->save(['date'=>date("Y-m-d"),'visit'=>1]);
+        //沒有今天的資料
+        $Visit->save(['date'=>date("Y-m-d"),'visit'=>1]);
     }else{
-       $today['visit']++; 
-       $Visit->save($today);
+        $today['visit']++;
+        $Visit->save($today);
     }
-   $_SESSION['visit']=1;
+
+    $_SESSION['visit']=1;
 }
+
+
+
+
 
 ?>
