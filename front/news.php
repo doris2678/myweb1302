@@ -32,7 +32,16 @@
             <div class="short"><?=mb_substr($row['text'],0,30);?>...</div>
             <div class="all" style='display:none'><?=nl2br($row['text']);?></div>
         </td>
-        <td></td>
+        <td>
+            <?php 
+            if(isset($_SESSION['login'])):
+                $chk=$Log->count(['news'=>$row['id'],'user'=>$_SESSION['login']]);
+            ?>
+            <a href="#" onclick="good(<?=$row['id'];?>)"><?=($chk)?'收回讚':'讚';?></a>
+            <?php
+            endif;
+            ?>
+        </td>
     </tr>
 <?php
     endforeach;
@@ -63,4 +72,10 @@ if($now+1<=$pages){
         $(this).next().find(".short,.all").toggle();
         //$(this).next().find(".all").toggle();
     })
+
+    function good(news){
+        $.post("./api/good.php",{news},function(){
+                location.reload();
+        })
+    }
 </script>

@@ -1,7 +1,6 @@
 <div class="nav" style="margin-bottom:20px;">
     目前位置：首頁 > 人氣文章區
 </div>
-
 <style>
     .title{
         cursor: pointer;
@@ -11,18 +10,18 @@
         text-decoration: underline;
         color:green;
     }
-       .pop {
+    .pop {
         background: rgba(51, 51, 51, 0.8);
-        color: #FFF;        
+        color: #FFF;
         height:400px;
         width: 500px;
         position: fixed;
         display: none;
         z-index: 9999;
         overflow: auto;
+
     }
 </style>
-
 <table style="width:95%;margin:auto">
     <tr class="ct">
         <td width="20%">標題</td>
@@ -39,19 +38,31 @@
     foreach($rows as $idx => $row):
 ?>
     <tr>
-        <td class="title"><?=$row['title'];?></td>
+        <td class='title'><?=$row['title'];?></td>
         <td>
             <div class="short"><?=mb_substr($row['text'],0,30);?>...</div>
             <div class="all">
-              <div id="alerr" class="pop">
-                <h2><?=$Type[$row['type']];?></h2>
+                <div id="alerr" class="pop">
+                    <h2><?=$Type[$row['type']];?></h2>
                     <pre id="ssaa">
-                      <?=$row['text'];?>
+                        <?=$row['text'];?>
                     </pre>
-              </div>
+                </div>
             </div>
         </td>
-        <td></td>
+        <td>
+            <span><?=$row['good'];?></span>個人說
+            <img src="./icon/02B03.jpg" style="width:18px;">
+            <?php 
+            if(isset($_SESSION['login'])):
+                $chk=$Log->count(['news'=>$row['id'],'user'=>$_SESSION['login']]);
+            ?>
+            <a href="#" onclick="good(<?=$row['id'];?>)"><?=($chk)?'-收回讚':'-讚';?></a>
+            <?php
+            endif;
+                ?>
+        </td>
+
     </tr>
 <?php
     endforeach;
@@ -75,16 +86,22 @@ if($now+1<=$pages){
 }
 ?>
 
-</div>
 
+</div>
 <script>
-  $(".title").hover(
+$(".title").hover(
     function(){
-      $(this).next().find(".pop").show()
+        $(this).next().find(".pop").show()
     },
     function(){
-      $(this).next().find(".pop").hide()  
+        $(this).next().find(".pop").hide()
     }
- )
+)
+
+    function good(news){
+        $.post("./api/good.php",{news},function(){
+                location.reload();
+        })
+    }
 
 </script>
